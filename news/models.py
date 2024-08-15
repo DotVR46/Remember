@@ -12,6 +12,7 @@ class Article(models.Model):
     created = models.DateTimeField(verbose_name="Дата создания", auto_now=True)
     published = models.BooleanField(verbose_name="Статус публикации", default=True)
     author = models.ForeignKey(User, verbose_name="Автор", on_delete=models.CASCADE)
+    cover = models.ImageField(upload_to="uploads/", default="media/stock-article.jpg", blank=True)
 
     def __str__(self):
         return f"{self.title}-{self.author.username}"
