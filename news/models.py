@@ -12,7 +12,9 @@ class Article(models.Model):
     created = models.DateTimeField(verbose_name="Дата создания", auto_now=True)
     published = models.BooleanField(verbose_name="Статус публикации", default=True)
     author = models.ForeignKey(User, verbose_name="Автор", on_delete=models.CASCADE)
-    cover = models.ImageField(upload_to="uploads/", default="media/stock-article.jpg", blank=True)
+    cover = models.ImageField(
+        upload_to="uploads/", default="media/stock-article.jpg", blank=True
+    )
 
     def __str__(self):
         return f"{self.title}-{self.author.username}"
@@ -25,3 +27,24 @@ class Article(models.Model):
     class Meta:
         verbose_name = "Новость"
         verbose_name_plural = "Новости"
+
+
+class Comment(models.Model):
+    article = models.ForeignKey(
+        Article,
+        on_delete=models.CASCADE,
+        verbose_name="Запись",
+        related_name="comments",
+    )
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, verbose_name="Пользователь"
+    )
+    text = models.CharField(max_length=300, verbose_name="Текст")
+    created = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
+
+    def __str__(self):
+        return f"Коммент от {self.user.username} на {self.article.title}"
+
+    class Meta:
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
