@@ -9,7 +9,7 @@ class Article(models.Model):
     title = models.CharField(verbose_name="Заголовок", max_length=150)
     slug = models.SlugField(null=False, unique=True)
     content = models.TextField(verbose_name="Текст записи")
-    created = models.DateTimeField(verbose_name="Дата создания", auto_now=True)
+    created_at = models.DateTimeField(verbose_name="Дата создания", auto_now=True)
     published = models.BooleanField(verbose_name="Статус публикации", default=True)
     author = models.ForeignKey(User, verbose_name="Автор", on_delete=models.CASCADE)
     cover = models.ImageField(
@@ -40,7 +40,7 @@ class Comment(models.Model):
         User, on_delete=models.CASCADE, verbose_name="Пользователь"
     )
     text = models.CharField(max_length=300, verbose_name="Текст")
-    created = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
+    created_at = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
 
     def __str__(self):
         return f"Коммент от {self.user.username} на {self.article.title}"

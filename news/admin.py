@@ -5,10 +5,10 @@ from news.models import Article, Comment
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ("title", "author", "created", "published")
+    list_display = ("title", "author", "created_at", "published")
     prepopulated_fields = {"slug": ("title",)}
 
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ("user", "article", "created")
+    list_display = ("user", "article", "created_at")
