@@ -13,7 +13,7 @@ class Article(models.Model):
     published = models.BooleanField(verbose_name="Статус публикации", default=True)
     author = models.ForeignKey(User, verbose_name="Автор", on_delete=models.CASCADE)
     cover = models.ImageField(
-        upload_to="uploads/", default="media/stock-article.jpg", blank=True
+        upload_to="uploads/", default="stock-article.jpg", blank=True
     )
 
     def __str__(self):
