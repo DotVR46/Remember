@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
+from taggit.managers import TaggableManager
 
 
 class Article(models.Model):
@@ -15,6 +16,7 @@ class Article(models.Model):
     cover = models.ImageField(
         upload_to="uploads/", default="stock-article.jpg", blank=True
     )
+    tags = TaggableManager()
 
     def __str__(self):
         return f"{self.title}-{self.author.username}"
