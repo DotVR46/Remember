@@ -20,6 +20,10 @@ from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
 
+admin.site.site_title = "Remember"
+admin.site.index_title = "Remember"
+admin.site.site_title = "Remember"
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("news.urls")),

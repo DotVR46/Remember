@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -133,3 +134,11 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 TAGGIT_CASE_INSENSITIVE = True
+JAZZMIN_SETTINGS = {
+    "site_title": "Remember",
+    "site_header": "Remember",
+    "site_brand": "Remember",
+}
+JAZZMIN_UI_TWEAKS = {
+    "theme": "flatly",
+}
