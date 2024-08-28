@@ -4,6 +4,23 @@ from django.template.defaultfilters import slugify
 from taggit.managers import TaggableManager
 
 
+class Category(models.Model):
+    name = models.CharField(verbose_name="Название", max_length=20)
+    slug = models.SlugField(null=False, unique=True)
+
+    def __str__(self):
+        return f"{self.name}"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
+
+
 class Article(models.Model):
     # Модель новостей
 
@@ -17,6 +34,9 @@ class Article(models.Model):
         upload_to="uploads/", default="stock-article.jpg", blank=True
     )
     tags = TaggableManager()
+    category = models.ForeignKey(
+        Category, verbose_name="Категории", on_delete=models.DO_NOTHING, blank=True, related_name="post_category"
+    )
 
     def __str__(self):
         return f"{self.title}-{self.author.username}"

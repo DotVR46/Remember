@@ -1,6 +1,12 @@
 from django.contrib import admin
 
-from news.models import Article, Comment
+from news.models import Article, Comment, Category
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+    prepopulated_fields = {"slug": ("name",)}
 
 
 @admin.register(Article)
