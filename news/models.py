@@ -5,6 +5,8 @@ from taggit.managers import TaggableManager
 
 
 class Category(models.Model):
+    """Категории"""
+
     name = models.CharField(verbose_name="Название", max_length=20)
     slug = models.SlugField(null=False, unique=True)
 
@@ -22,7 +24,7 @@ class Category(models.Model):
 
 
 class Article(models.Model):
-    # Модель новостей
+    """Записи"""
 
     title = models.CharField(verbose_name="Заголовок", max_length=150)
     slug = models.SlugField(null=False, unique=True)
@@ -35,7 +37,11 @@ class Article(models.Model):
     )
     tags = TaggableManager()
     category = models.ForeignKey(
-        Category, verbose_name="Категории", on_delete=models.DO_NOTHING, blank=True, related_name="post_category"
+        Category,
+        verbose_name="Категории",
+        on_delete=models.DO_NOTHING,
+        blank=True,
+        related_name="post_category",
     )
 
     def __str__(self):
@@ -52,6 +58,8 @@ class Article(models.Model):
 
 
 class Comment(models.Model):
+    """Комментарии"""
+
     article = models.ForeignKey(
         Article,
         on_delete=models.CASCADE,
