@@ -8,30 +8,32 @@ class IndexPageView(generic.ListView):
     context_object_name = "news_by_category"  # Имя переменной контекста в шаблоне
 
     def get_queryset(self):
-        # Получаем все новости, отсортированные по категории и дате публикации
-        all_news = Article.objects.select_related("category").order_by(
-            "category", "-pub_date"
-        )
+        # Подзапрос для получения последних 10 новостей в каждой категории
+        subquery = News.objects.filter(
+            category=OuterRef('category')
+        ).order_by('-created_at').values('id')[:10]
 
-        # Группируем новости по категориям и отбираем последние 10 для каждой
+        # Основной запрос, фильтрующий новости по результатам подзапроса
+        news_by_category = News.objects.filter(id__in=Subquery(subquery))
+
+        # Группировка новостей по категориям
         categorized_news = {}
-        for news in all_news:
+        for news in news_by_category:
             if news.category not in categorized_news:
                 categorized_news[news.category] = []
-            if len(categorized_news[news.category]) < 10:
-                categorized_news[news.category].append(news)
+            categorized_news[news.category].append(news)
 
         return categorized_news
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Добавляем выборку последних 10 новостей вне зависимости от категории
-        last_10_news = Article.objects.order_by("-pub_date")[:10]
+        # Добавляем последние 10 новостей вне зависимости от категории
+        last_10_news = News.objects.order_by('-created_at')[:10]
 
-        # Добавляем результаты в контекст
-        context["news_by_category"] = self.get_queryset()
-        context["last_10_news"] = last_10_news
+        # Добавляем данные в контекст
+        context['news_by_category'] = self.get_queryset()
+        context['last_10_news'] = last_10_news
 
         return context
 
