@@ -1,3 +1,4 @@
+from django.db.models import OuterRef, Subquery
 from django.shortcuts import render
 from django.views import generic
 from news.models import Article
@@ -9,12 +10,12 @@ class IndexPageView(generic.ListView):
 
     def get_queryset(self):
         # Подзапрос для получения последних 10 новостей в каждой категории
-        subquery = News.objects.filter(
+        subquery = Article.objects.filter(
             category=OuterRef('category')
         ).order_by('-created_at').values('id')[:10]
 
         # Основной запрос, фильтрующий новости по результатам подзапроса
-        news_by_category = News.objects.filter(id__in=Subquery(subquery))
+        news_by_category = Article.objects.filter(id__in=Subquery(subquery))
 
         # Группировка новостей по категориям
         categorized_news = {}
@@ -29,7 +30,7 @@ class IndexPageView(generic.ListView):
         context = super().get_context_data(**kwargs)
 
         # Добавляем последние 10 новостей вне зависимости от категории
-        last_10_news = News.objects.order_by('-created_at')[:10]
+        last_10_news = Article.objects.order_by('-created_at')[:10]
 
         # Добавляем данные в контекст
         context['news_by_category'] = self.get_queryset()
