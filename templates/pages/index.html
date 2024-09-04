@@ -32,11 +32,11 @@
           </script>
 
                     <div class="swiper-wrapper">
-                        {% for article in last_10_articles|slice: ':4' %}
+                        {% for article in last_10_articles|slice:':4' %}
                             <div class="swiper-slide" style="background-image: url('{{ article.cover.url }}');">
                                 <div class="content">
                                     <h2><a href="{% url 'article-detail' article.slug %}">{{ article.title }}</a></h2>
-                                    <p>{{ article.content|truncatewords: 10 }}</p>
+                                    <p>{{ article.content|truncatewords:10 }}</p>
                                 </div>
                             </div>
                         {% endfor %}
