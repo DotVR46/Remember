@@ -17,26 +17,26 @@ class IndexPageView(generic.ListView):
         )
 
         # Основной запрос, фильтрующий новости по результатам подзапроса
-        news_by_category = Article.objects.filter(id__in=Subquery(subquery))
+        articles_by_category = Article.objects.filter(id__in=Subquery(subquery))
 
         # Группировка новостей по категориям
-        categorized_news = {}
-        for news in news_by_category:
-            if news.category not in categorized_news:
-                categorized_news[news.category] = []
-            categorized_news[news.category].append(news)
+        categorized_articles = {}
+        for articles in articles_by_category:
+            if articles.category not in categorized_articles:
+                categorized_articles[articles.category] = []
+            categorized_articles[articles.category].append(articles)
 
-        return categorized_news
+        return categorized_articles
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         # Добавляем последние 10 новостей вне зависимости от категории
-        last_10_news = Article.objects.order_by("-created_at")[:10]
+        last_10_articles = Article.objects.order_by("-created_at")[:10]
 
         # Добавляем данные в контекст
         context["articles_by_category"] = self.get_queryset()
-        context["last_10_articles"] = last_10_news
+        context["last_10_articles"] = last_10_articles
 
         return context
 
