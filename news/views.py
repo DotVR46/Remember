@@ -1,5 +1,7 @@
 from django.db.models import OuterRef, Subquery, Q
 from django.views import generic
+from taggit.models import Tag
+
 from news.models import Article
 
 
@@ -59,5 +61,8 @@ class ArticleDetailView(generic.DetailView):
 
         # Передаем 5 последних статей в контекст, исключая текущую статью
         context['last_5_articles'] = Article.objects.exclude(id=self.object.id).order_by('-created_at')[:5]
+
+        # Собираем 10 случайных тегов
+        context['tags'] = Tag.objects.order_by('?')[:10]
 
         return context
