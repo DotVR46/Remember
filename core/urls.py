@@ -26,6 +26,7 @@ admin.site.site_title = "Remember"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('avatar/', include('avatar.urls')),
     path("", include("news.urls")),
 ]
 

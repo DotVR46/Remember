@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "jazzmin",
     "taggit",
+    "avatar",
     "django_cleanup",
     "django.contrib.admin",
     "django.contrib.auth",
