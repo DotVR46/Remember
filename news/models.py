@@ -71,6 +71,9 @@ class Comment(models.Model):
     )
     text = models.CharField(max_length=300, verbose_name="Текст")
     created_at = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
+    parent = models.ForeignKey(
+        'self', verbose_name='Родитель', on_delete=models.SET_NULL, blank=True, null=True
+    )
 
     def __str__(self):
         return f"Коммент от {self.user.username} на {self.article.title}"
