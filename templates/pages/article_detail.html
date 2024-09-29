@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load avatar_tags %}
+{% load comments_filters %}
 {% block title %}{{ article.title }}{% endblock %}
 {% block content %}
     <main class="main">
@@ -43,7 +44,8 @@
                                             <time datetime="2020-01-01">{{ article.created_at }}</time>
                                         </a></li>
                                         <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a
-                                                href="blog-details.html">12 Comments</a></li>
+                                                href="blog-details.html">{{ article.comments.count|comment_declension }}</a>
+                                        </li>
                                     </ul>
                                 </div><!-- End meta top -->
 
@@ -76,7 +78,7 @@
 
                         <div class="container">
 
-                            <h4 class="comments-count">8 Comments</h4>
+                            <h4 class="comments-count">{{ article.comments.count|comment_declension }}</h4>
 
                             <div id="comment-1" class="comment">
                                 <div class="d-flex">
@@ -246,7 +248,7 @@
 
                             <div class="d-flex flex-column align-items-center">
                                 <div class="d-flex align-items-center w-100">
-                                    {% avatar user class="rounded-circle flex-shrink-0" %}
+                                    {% avatar article.author class="rounded-circle flex-shrink-0" %}
                                     <div>
                                         <h4>{{ article.author.username }}</h4>
                                         <div class="social-links">

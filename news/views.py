@@ -1,4 +1,4 @@
-from django.db.models import OuterRef, Subquery, Q
+from django.db.models import OuterRef, Subquery, Q, Count
 from django.views import generic
 from taggit.models import Tag
 
@@ -15,7 +15,7 @@ class IndexPageView(generic.ListView):
             Article.objects.filter(category=OuterRef("category"))
             .order_by("-created_at")
             .values("id")[:10]
-        )
+        ).annotate(comment_count=Count('comments'))
 
         # Основной запрос, фильтрующий новости по результатам подзапроса
         articles_by_category = Article.objects.filter(id__in=Subquery(subquery))

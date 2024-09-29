@@ -143,3 +143,5 @@ JAZZMIN_SETTINGS = {
 JAZZMIN_UI_TWEAKS = {
     "theme": "flatly",
 }
+
+AVATAR_DEFAULT_URL = MEDIA_URL + "avatars/avatar.jpg"
