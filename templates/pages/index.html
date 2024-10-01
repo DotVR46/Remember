@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load avatar_tags %}
 {% block title %}Main page{% endblock %}
 {% block content %}
     <main class="main">
@@ -62,25 +63,28 @@
                         <div class="col-lg-4">
 
                             <div class="post-entry lg">
-                                <a href="blog-details.html"><img src="static/assets/img/post-landscape-1.jpg" alt=""
-                                                                 class="img-fluid"></a>
-                                <div class="post-meta"><span class="date">Culture</span> <span class="mx-1">•</span>
-                                    <span>Jul 5th '22</span></div>
-                                <h2><a href="blog-details.html">11 Work From Home Part-Time Jobs You Can Do Now</a></h2>
-                                <p class="mb-4 d-block">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vero
-                                    temporibus repudiandae, inventore pariatur numquam cumque possimus exercitationem?
-                                    Nihil tempore odit ab minus eveniet praesentium, similique blanditiis molestiae ut
-                                    saepe perspiciatis officia nemo, eos quae cumque. Accusamus fugiat architecto rerum
-                                    animi atque eveniet, quo, praesentium dignissimos</p>
+                                {% for article in last_10_articles|slice:':1' %}
 
-                                <div class="d-flex align-items-center author">
-                                    <div class="photo"><img src="static/assets/img/person-1.jpg" alt=""
-                                                            class="img-fluid">
+
+
+                                    <a href="{% url 'article-detail' article.slug %}"><img src="{{ article.cover.url }}"
+                                                                                           alt=""
+                                                                                           class="img-fluid"></a>
+                                    <div class="post-meta"><span class="date">{{ article.category.name }}</span> <span
+                                            class="mx-1">•</span>
+                                        <span>{{ article.created_at }}</span></div>
+                                    <h2><a href="{% url 'article-detail' article.slug %}">{{ article.title }}</a>
+                                    </h2>
+                                    <p class="mb-4 d-block">{{ article.content|truncatewords:20 }}</p>
+
+                                    <div class="d-flex align-items-center author">
+                                        <div class="photo">{% avatar article.author class="img-fluid" %}
+                                        </div>
+                                        <div class="name">
+                                            <h3 class="m-0 p-0">{{ article.author.username }}</h3>
+                                        </div>
                                     </div>
-                                    <div class="name">
-                                        <h3 class="m-0 p-0">Cameron Williamson</h3>
-                                    </div>
-                                </div>
+                                {% endfor %}
                             </div>
 
                         </div>
