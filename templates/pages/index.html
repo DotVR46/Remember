@@ -72,7 +72,7 @@
                                                                                            class="img-fluid"></a>
                                     <div class="post-meta"><span class="date">{{ article.category.name }}</span> <span
                                             class="mx-1">•</span>
-                                        <span>{{ article.created_at }}</span></div>
+                                        <span>{{ article.created_at|date:"d M, Y" }}</span></div>
                                     <h2><a href="{% url 'article-detail' article.slug %}">{{ article.title }}</a>
                                     </h2>
                                     <p class="mb-4 d-block">{{ article.content|truncatewords:20 }}</p>
@@ -91,63 +91,27 @@
 
                         <div class="col-lg-8">
                             <div class="row g-5">
-                                <div class="col-lg-4 border-start custom-border">
-                                    <div class="post-entry">
-                                        <a href="blog-details.html"><img src="static/assets/img/post-landscape-2.jpg"
-                                                                         alt=""
-                                                                         class="img-fluid"></a>
-                                        <div class="post-meta"><span class="date">Sport</span> <span
-                                                class="mx-1">•</span> <span>Jul 5th '22</span></div>
-                                        <h2><a href="blog-details.html">Let’s Get Back to Work, New York</a></h2>
+                                {% for article in last_10_articles|slice:'1:9' %}
+                                    {% if forloop.counter == 1 or forloop.counter == 5 %}
+                                        <!-- Открываем новый col-lg-4 каждые 4 статьи -->
+                                        <div class="col-lg-4 border-start custom-border">
+                                    {% endif %}
+                                <div class="post-entry">
+                                    <a href="{% url 'article-detail' article.slug %}"><img
+                                            src="{{ article.cover.url }}"
+                                            alt=""
+                                            class="img-fluid"></a>
+                                    <div class="post-meta"><span class="date">{{ article.category }}</span> <span
+                                            class="mx-1">•</span> <span>{{ article.created_at|date:"d M, Y" }}</span>
                                     </div>
-                                    <div class="post-entry">
-                                        <a href="blog-details.html"><img src="static/assets/img/post-landscape-5.jpg"
-                                                                         alt=""
-                                                                         class="img-fluid"></a>
-                                        <div class="post-meta"><span class="date">Food</span> <span
-                                                class="mx-1">•</span> <span>Jul 17th '22</span></div>
-                                        <h2><a href="blog-details.html">How to Avoid Distraction and Stay Focused During
-                                            Video Calls?</a></h2>
-                                    </div>
-                                    <div class="post-entry">
-                                        <a href="blog-details.html"><img src="static/assets/img/post-landscape-7.jpg"
-                                                                         alt=""
-                                                                         class="img-fluid"></a>
-                                        <div class="post-meta"><span class="date">Design</span> <span
-                                                class="mx-1">•</span> <span>Mar 15th '22</span></div>
-                                        <h2><a href="blog-details.html">Why Craigslist Tampa Is One of The Most
-                                            Interesting Places On the Web?</a></h2>
-                                    </div>
+                                    <h2><a href="{% url 'article-detail' article.slug %}">{{ article.title }}</a></h2>
                                 </div>
-                                <div class="col-lg-4 border-start custom-border">
-                                    <div class="post-entry">
-                                        <a href="blog-details.html"><img src="static/assets/img/post-landscape-3.jpg"
-                                                                         alt=""
-                                                                         class="img-fluid"></a>
-                                        <div class="post-meta"><span class="date">Business</span> <span
-                                                class="mx-1">•</span> <span>Jul 5th '22</span></div>
-                                        <h2><a href="blog-details.html">6 Easy Steps To Create Your Own Cute Merch For
-                                            Instagram</a></h2>
+                                {% if forloop.counter == 4 or forloop.counter == 8 %}
+                                    <!-- Закрываем div col-lg-4 после каждой четвертой статьи -->
                                     </div>
-                                    <div class="post-entry">
-                                        <a href="blog-details.html"><img src="static/assets/img/post-landscape-6.jpg"
-                                                                         alt=""
-                                                                         class="img-fluid"></a>
-                                        <div class="post-meta"><span class="date">Tech</span> <span
-                                                class="mx-1">•</span> <span>Mar 1st '22</span></div>
-                                        <h2><a href="blog-details.html">10 Life-Changing Hacks Every Working Mom Should
-                                            Know</a></h2>
-                                    </div>
-                                    <div class="post-entry">
-                                        <a href="blog-details.html"><img src="static/assets/img/post-landscape-8.jpg"
-                                                                         alt=""
-                                                                         class="img-fluid"></a>
-                                        <div class="post-meta"><span class="date">Travel</span> <span
-                                                class="mx-1">•</span> <span>Jul 5th '22</span></div>
-                                        <h2><a href="blog-details.html">5 Great Startup Tips for Female Founders</a>
-                                        </h2>
-                                    </div>
-                                </div>
+                                {% endif %}
+
+                                {% endfor %}
 
                                 <!-- Trending Section -->
                                 <div class="col-lg-4">
