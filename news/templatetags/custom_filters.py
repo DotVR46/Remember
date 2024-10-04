@@ -1,4 +1,5 @@
 from django import template
+import random
 
 register = template.Library()
 
@@ -13,3 +14,10 @@ def comment_declension(count):
         return f"{count} комментария"
     else:
         return f"{count} комментариев"
+
+
+@register.filter
+def random_articles(articles, count=5):
+    articles_list = list(articles)
+    random.shuffle(articles_list)  # Перемешиваем статьи
+    return articles_list[:count]  # Возвращаем первые count (по умолчанию 5)
