@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
 from taggit.managers import TaggableManager
+from options import *
 
 
 class Category(models.Model):
@@ -14,6 +15,8 @@ class Category(models.Model):
         return f"{self.name}"
 
     def save(self, *args, **kwargs):
+        if not self.pk and Category.objects.count() >= NUMBER_OF_CATEGORIES:
+            raise ValidationError(f"Может быть только {NUMBER_OF_CATEGORIES} категории")
         if not self.slug:
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
@@ -26,8 +29,8 @@ class Category(models.Model):
 class Article(models.Model):
     """Записи"""
 
-    title = models.CharField(verbose_name="Заголовок", max_length=150)
-    slug = models.SlugField(null=False, unique=True)
+    title = models.CharField(verbose_name="Заголовок", max_length=300)
+    slug = models.SlugField(null=False, unique=True, max_length=300)
     content = models.TextField(verbose_name="Текст записи")
     created_at = models.DateTimeField(verbose_name="Дата создания", auto_now=True)
     published = models.BooleanField(verbose_name="Статус публикации", default=True)
@@ -38,7 +41,7 @@ class Article(models.Model):
     tags = TaggableManager()
     category = models.ForeignKey(
         Category,
-        verbose_name="Категории",
+        verbose_name="Категория",
         on_delete=models.DO_NOTHING,
         blank=True,
         related_name="post_category",
