@@ -3,6 +3,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from taggit.managers import TaggableManager
 from options import *
+from django.core.exceptions import ValidationError
 
 
 # TODO:
@@ -19,8 +20,6 @@ class Category(models.Model):
         return f"{self.name}"
 
     def save(self, *args, **kwargs):
-        if not self.pk and Category.objects.count() >= NUMBER_OF_CATEGORIES:
-            raise ValidationError(f"Может быть только {NUMBER_OF_CATEGORIES} категории")
         if not self.slug:
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)

@@ -14,7 +14,7 @@ class IndexPageView(generic.ListView):
         subquery = (
             Article.objects.filter(category=OuterRef("category"))
             .order_by("-created_at")
-            .values("id")[:10]
+            .values("id")[:15]
         )
 
         # Основной запрос, фильтрующий новости по результатам подзапроса

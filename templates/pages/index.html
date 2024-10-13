@@ -143,7 +143,6 @@
 
         </section><!-- /Trending Category Section -->
 
-        <!-- Culture Category Section -->
         {% for category, articles in articles_by_category.items %}
             <section id="{% cycle 'culture' 'business' 'lifestyle' %}-category"
                      class="{% cycle 'culture' 'business' 'lifestyle' %}-category section">
@@ -169,7 +168,7 @@
 
                 </div>
 
-            </section><!-- /Culture Category Section -->
+            </section>
 
         {% endfor %}
 
