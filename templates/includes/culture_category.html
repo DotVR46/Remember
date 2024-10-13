@@ -5,14 +5,14 @@
         {% for article in articles|slice:":1" %}
 
             <div class="d-lg-flex post-entry">
-                <a href="{% url 'article-detail' article.slug %}" class="me-4 thumbnail mb-4 mb-lg-0 d-inline-block">
+                <a href="{{ article.get_absolute_url }}" class="me-4 thumbnail mb-4 mb-lg-0 d-inline-block">
                     <img src="{{ article.cover.url }}" alt="" class="img-fluid">
                 </a>
                 <div>
                     <div class="post-meta"><span class="date">{{ article.category.name }}</span> <span
                             class="mx-1">•</span>
                         <span>{{ article.created_at|date:"d M, Y" }}</span></div>
-                    <h3><a href="{% url 'article-detail' article.slug %}">{{ article.title }}</a></h3>
+                    <h3><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h3>
                     <p>{{ article.content|truncatewords:20 }}</p>
                     <div class="d-flex align-items-center author">
                         <div class="photo">{% avatar article.author class="img-fluid" %}
@@ -24,20 +24,17 @@
                 </div>
             </div>
         {% endfor %}
-
-
-
         <div class="row">
             <div class="col-lg-4">
                 {% for article in articles|slice:"1:2" %}
                     <div class="post-list border-bottom">
-                        <a href="{% url 'article-detail' article.slug %}"><img src="{{ article.cover.url }}"
-                                                                               alt=""
-                                                                               class="img-fluid"></a>
+                        <a href="{{ article.get_absolute_url }}"><img src="{{ article.cover.url }}"
+                                                                      alt=""
+                                                                      class="img-fluid"></a>
                         <div class="post-meta"><span class="date">{{ article.category.name }}</span> <span
                                 class="mx-1">•</span>
                             <span>{{ article.created_at|date:"d M, Y" }}</span></div>
-                        <h2 class="mb-2"><a href="{% url 'article-detail' article.slug %}">{{ article.title }}</a></h2>
+                        <h2 class="mb-2"><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
                         <span class="author mb-3 d-block">{{ article.author.username }}</span>
                         <p class="mb-4 d-block">{{ article.content|truncatewords:10 }}</p>
                     </div>
@@ -47,7 +44,7 @@
                         <div class="post-meta"><span class="date">{{ article.category.name }}</span> <span
                                 class="mx-1">•</span>
                             <span>{{ article.created_at|date:"d M, Y" }}</span></div>
-                        <h2 class="mb-2"><a href="{% url 'article-detail' article.slug %}">{{ article.title }}</a></h2>
+                        <h2 class="mb-2"><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
                         <span class="author mb-3 d-block">{{ article.author.username }}</span>
                     </div>
                 {% endfor %}
@@ -55,13 +52,13 @@
             <div class="col-lg-8">
                 {% for article in articles|slice:"3:4" %}
                     <div class="post-list">
-                        <a href="{% url 'article-detail' article.slug %}"><img src="{{ article.cover.url }}"
-                                                                               alt=""
-                                                                               class="img-fluid"></a>
+                        <a href="{{ article.get_absolute_url }}"><img src="{{ article.cover.url }}"
+                                                                      alt=""
+                                                                      class="img-fluid"></a>
                         <div class="post-meta"><span class="date">{{ article.category.name }}</span> <span
                                 class="mx-1">•</span>
                             <span>{{ article.created_at|date:"d M, Y" }}</span></div>
-                        <h2 class="mb-2"><a href="{% url 'article-detail' article.slug %}">{{ article.title }}</a></h2>
+                        <h2 class="mb-2"><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
                         <span class="author mb-3 d-block">{{ article.author.username }}</span>
                         <p class="mb-4 d-block">{{ article.content|truncatewords:10 }}</p>
                     </div>
@@ -75,7 +72,7 @@
                 <div class="post-meta"><span class="date">{{ article.category.name }}</span> <span class="mx-1">•</span>
                     <span>{{ article.created_at|date:"d M, Y" }}</span>
                 </div>
-                <h2 class="mb-2"><a href="{% url 'article-detail' article.slug %}">{{ article.title }}</a></h2>
+                <h2 class="mb-2"><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
                 <span class="author mb-3 d-block">{{ article.author.username }}</span>
             </div>
         {% endfor %}

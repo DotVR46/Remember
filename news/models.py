@@ -4,6 +4,7 @@ from django.template.defaultfilters import slugify
 from taggit.managers import TaggableManager
 from options import *
 from django.core.exceptions import ValidationError
+from django.urls import reverse
 
 
 # TODO:
@@ -57,6 +58,9 @@ class Article(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("article-detail", kwargs={"slug": self.slug})
 
     class Meta:
         verbose_name = "Новость"
