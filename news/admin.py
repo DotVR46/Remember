@@ -18,6 +18,7 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ("title", "author", "created_at", "published", "category")
+    list_filter = ("category", "published")
     prepopulated_fields = {"slug": ("title",)}
 
 
