@@ -49,20 +49,23 @@ class ArticleDetailView(generic.DetailView):
 
     def get_queryset(self):
         # Получаем slug статьи для детализированного просмотра
-        article_slug = self.kwargs.get('slug')
+        article_slug = self.kwargs.get("slug")
 
         # Выбираем текущий пост и последние 5 постов за один запрос
         return Article.objects.filter(
-            Q(slug=article_slug) | Q(id__in=Article.objects.order_by('-created_at').values('id')[:5])
+            Q(slug=article_slug)
+            | Q(id__in=Article.objects.order_by("-created_at").values("id")[:5])
         )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         # Передаем 5 последних статей в контекст, исключая текущую статью
-        context['last_5_articles'] = Article.objects.exclude(id=self.object.id).order_by('-created_at')[:5]
+        context["last_5_articles"] = Article.objects.exclude(
+            id=self.object.id
+        ).order_by("-created_at")[:5]
 
         # Собираем 10 случайных тегов
-        context['tags'] = Tag.objects.order_by('?')[:10]
+        context["tags"] = Tag.objects.order_by("?")[:10]
 
         return context
