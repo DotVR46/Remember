@@ -1,9 +1,10 @@
+from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
 from taggit.managers import TaggableManager
 from options import *
-from django.core.exceptions import ValidationError
+
 from django.urls import reverse
 
 
@@ -35,7 +36,7 @@ class Article(models.Model):
 
     title = models.CharField(verbose_name="Заголовок", max_length=300)
     slug = models.SlugField(null=False, unique=True, max_length=300)
-    content = models.TextField(verbose_name="Текст записи")
+    content = RichTextField(verbose_name="Текст записи")
     created_at = models.DateTimeField(verbose_name="Дата создания", auto_now=True)
     published = models.BooleanField(verbose_name="Статус публикации", default=True)
     author = models.ForeignKey(User, verbose_name="Автор", on_delete=models.CASCADE)

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "jazzmin",
     "taggit",
     "avatar",
+    "ckeditor",
     "django_cleanup",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -145,3 +146,30 @@ JAZZMIN_UI_TWEAKS = {
 }
 
 AVATAR_DEFAULT_URL = MEDIA_URL + "avatars/avatar.jpg"
+
+CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'width': '100%',
+        'toolbar_CustomConfig': [
+            {'name': 'clipboard', 'items': ['Undo', 'Redo']},
+            {'name': 'yourcustomtools', 'items': [
+                'Preview',
+                'Maximize',
+            ]},
+            '/',
+            {'name': 'styles', 'items': ['Styles', 'Format']},
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat']},
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', 'Blockquote']},
+            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+            {'name': 'insert',
+             'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+        ],
+        'toolbar': 'CustomConfig'
+    },
+}
+CKEDITOR_UPLOAD_PATH = "uploads/"
