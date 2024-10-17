@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load avatar_tags %}
 {% load custom_filters %}
 {% block title %}{{ article.title }}{% endblock %}
 {% block content %}
@@ -83,7 +82,8 @@
                             {% for comment in article.get_comment %}
                                 <div class="comment">
                                     <div class="d-flex">
-                                        <div class="comment-img">{% avatar article.author class="rounded-circle flex-shrink-0" %}</div>
+                                        <div class="comment-img"><img src="{{ article.author.userprofile.avatar.url }}"
+                                                                      alt="" class="rounded-circle flex-shrink-0"></div>
                                         <div>
                                             <h5><a href="">{{ comment.user.username }}</a> <a href="#"
                                                                                               class="reply"><i
@@ -98,7 +98,9 @@
                                 {% for comment_reply in comment.comment_set.all %}
                                     <div id="comment-reply-1" class="comment comment-reply">
                                         <div class="d-flex">
-                                            <div class="comment-img">{% avatar article.author class="rounded-circle flex-shrink-0" %}
+                                            <div class="comment-img"><img
+                                                    src="{{ article.author.userprofile.avatar.url }}" alt=""
+                                                    class="rounded-circle flex-shrink-0">
                                             </div>
                                             <div>
                                                 <h5><a href="">{{ comment_reply.user.username }}</a> <a href="#"
@@ -166,7 +168,8 @@
 
                             <div class="d-flex flex-column align-items-center">
                                 <div class="d-flex align-items-center w-100">
-                                    {% avatar article.author class="rounded-circle flex-shrink-0" %}
+                                    <img src="{{ article.author.userprofile.avatar.url }}" alt=""
+                                         class="rounded-circle flex-shrink-0">
                                     <div>
                                         <h4>{{ article.author.username }}</h4>
                                         <div class="social-links">
