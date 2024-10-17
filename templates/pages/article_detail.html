@@ -12,7 +12,7 @@
                 <nav class="breadcrumbs">
                     <ol>
                         <li><a href="{% url 'main-page' %}">Главная</a></li>
-                        <li class="current">{{ article.title }}</li>
+                        <li class="current">{{ article.title|truncatewords:4 }}</li>
                     </ol>
                 </nav>
             </div>
@@ -191,7 +191,7 @@
                         <!-- Search Widget -->
                         <div class="search-widget widget-item">
 
-                            <h3 class="widget-title">Search</h3>
+                            <h3 class="widget-title">Поиск</h3>
                             <form action="">
                                 <input type="text">
                                 <button type="submit" title="Search"><i class="bi bi-search"></i></button>
