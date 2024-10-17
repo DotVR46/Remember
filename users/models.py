@@ -20,5 +20,6 @@ class UserProfile(models.Model):
         return self.user.username
 
     class Meta:
+        app_label = "auth"
         verbose_name = "Профиль"
         verbose_name_plural = "Профили"

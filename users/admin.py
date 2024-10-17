@@ -19,7 +19,8 @@ class UserProfileAdmin(admin.ModelAdmin):
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
     can_delete = False
-    verbose_name_plural = 'Профили пользователей'
+    verbose_name = "Профиль пользователя"
+    verbose_name_plural = "Профиль пользователя"
 
 
 # Расширяем стандартную админку пользователей
