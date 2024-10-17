@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "jazzmin",
     "taggit",
-    "avatar",
     "django_ckeditor_5",
     "django_cleanup",
     "django.contrib.admin",
@@ -145,8 +144,6 @@ JAZZMIN_SETTINGS = {
 JAZZMIN_UI_TWEAKS = {
     "theme": "flatly",
 }
-
-AVATAR_DEFAULT_URL = MEDIA_URL + "avatars/avatar.jpg"
 
 customColorPalette = [
     {"color": "hsl(4, 90%, 58%)", "label": "Red"},

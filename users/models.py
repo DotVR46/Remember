@@ -12,6 +12,9 @@ class UserProfile(models.Model):
     twitter = models.URLField(max_length=200, blank=True, verbose_name="Twitter")
     facebook = models.URLField(max_length=200, blank=True, verbose_name="Facebook")
     instagram = models.URLField(max_length=200, blank=True, verbose_name="Instagram")
+    avatar = models.ImageField(
+        upload_to="avatars/", default="avatars/avatar.jpg", blank=True
+    )
 
     def __str__(self):
         return self.user.username

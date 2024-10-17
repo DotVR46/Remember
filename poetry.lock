@@ -118,22 +118,6 @@ files = [
 django = "*"
 
 [[package]]
-name = "django-avatar"
-version = "8.0.1"
-description = "A Django app for handling user avatars"
-optional = false
-python-versions = "*"
-files = [
-    {file = "django_avatar-8.0.1-py3-none-any.whl", hash = "sha256:30dd9735890802c7e5c416e707cf049c35f78b86a0f95f60a7dd8ee6de0f0f72"},
-    {file = "django_avatar-8.0.1.tar.gz", hash = "sha256:2c4550489be08e9e5fe47b6c82afaba111a9c20d83957d5b660c63ea3b0eb5f2"},
-]
-
-[package.dependencies]
-django-appconf = ">=1.0.5"
-dnspython = ">=2.3.0"
-Pillow = ">=10.0.1"
-
-[[package]]
 name = "django-ckeditor-5"
 version = "0.2.14"
 description = "CKEditor 5 for Django."
@@ -483,4 +467,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "cce19dc124fef5b38c1012dcf02b78f6505a54572ff4f37324e159ee43e69a35"
+content-hash = "3dd9a122137cb48ac5ffd03b67d41dc12d346c6ebdf180820c262353c125cbc4"
