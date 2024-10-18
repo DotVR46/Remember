@@ -85,8 +85,9 @@
                                         <div class="comment-img"><img src="{{ article.author.userprofile.avatar.url }}"
                                                                       alt="" class="rounded-circle flex-shrink-0"></div>
                                         <div>
-                                            <h5><a href="">{{ comment.user.username }}</a> <a href="#"
-                                                                                              class="reply"><i
+                                            <h5><a href="">{{ comment.user.username }}</a> <a href="#formComment"
+                                                                                              class="reply"
+                                                                                              onclick="addCommentReply('{{ comment.user.username }}', '{{ comment.id }}')"><i
                                                     class="bi bi-reply-fill"></i> Ответить</a></h5>
                                             <time datetime="2020-01-01">{{ comment.created_at|date:"d M, Y" }}</time>
                                             <p>
@@ -103,8 +104,10 @@
                                                     class="rounded-circle flex-shrink-0">
                                             </div>
                                             <div>
-                                                <h5><a href="">{{ comment_reply.user.username }}</a> <a href="#"
-                                                                                                        class="reply"><i
+                                                <h5><a href="">{{ comment_reply.user.username }}</a> <a
+                                                        href="#formComment"
+                                                        onclick="addCommentReply('{{ comment_reply.user.username }}', '{{ comment_reply.id }}')"
+                                                        class=" reply"><i
                                                         class="bi bi-reply-fill"></i> Ответить</a></h5>
                                                 <time datetime="2020-01-01">{{ comment_reply.created_at|date:"d M, Y" }}</time>
                                                 <p>
@@ -121,35 +124,20 @@
 
                     <!-- Comment Form Section -->
                     <section id="comment-form" class="comment-form section">
-                        <div class="container">
+                        <div class="container" id="formComment">
 
                             <form action="">
+                                <input type="hidden" name="parent" id="contactparent" value="">
 
-                                <h4>Post Comment</h4>
-                                <p>Your email address will not be published. Required fields are marked * </p>
-                                <div class="row">
-                                    <div class="col-md-6 form-group">
-                                        <input name="name" type="text" class="form-control" placeholder="Your Name*">
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <input name="email" type="text" class="form-control" placeholder="Your Email*">
-                                    </div>
-                                </div>
+                                <h4>Оставить комментарий</h4>
                                 <div class="row">
                                     <div class="col form-group">
-                                        <input name="website" type="text" class="form-control"
-                                               placeholder="Your Website">
+                                            <textarea name="comment" class="form-control"
+                                                      placeholder="Ваш комментарий *" id="contactcomment"></textarea>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col form-group">
-                                        <textarea name="comment" class="form-control"
-                                                  placeholder="Your Comment*"></textarea>
-                                    </div>
-                                </div>
-
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                                    <button type="submit" class="btn btn-primary">Отправить</button>
                                 </div>
 
                             </form>
@@ -239,4 +227,10 @@
         </div>
 
     </main>
+    <script>
+        function addCommentReply(name, id) {
+            document.getElementById("contactparent").value = id;
+            document.getElementById("contactcomment").innerText = `${name}, `
+        }
+    </script>
 {% endblock %}
