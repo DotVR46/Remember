@@ -1,7 +1,9 @@
 from django.db.models import OuterRef, Subquery, Q, Count
+from django.shortcuts import redirect
 from django.views import generic
 from taggit.models import Tag
 
+from news.forms import CommentForm
 from news.models import Article
 
 
@@ -69,3 +71,17 @@ class ArticleDetailView(generic.DetailView):
         context["tags"] = Tag.objects.order_by("?")[:10]
 
         return context
+
+    @staticmethod
+    def post(request, slug):
+        article = Article.objects.get(slug=slug)
+        user = request.user
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            if request.POST.get("parent", None):
+                form.parent_id = int(request.POST.get("parent"))
+            form.article = article
+            form.user = user
+            form.save()
+        return redirect(article.get_absolute_url())
