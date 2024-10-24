@@ -1,4 +1,3 @@
-{% load avatar_tags %}
 <div class="row g-5">
     <div class="col-lg-4">
         {% for article in articles|slice:":1" %}
@@ -11,7 +10,8 @@
                 <p class="mb-4 d-block">{{ article.content|truncatewords:20 }}</p>
 
                 <div class="d-flex align-items-center author">
-                    <div class="photo">{% avatar article.author class="img-fluid" %}
+                    <div class="photo"><img src="{{ article.author.userprofile.avatar.url }}"
+                                            alt="" class="img-fluid">
                     </div>
                     <div class="name">
                         <h3 class="m-0 p-0">{{ article.author.username }}</h3>
