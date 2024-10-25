@@ -85,3 +85,22 @@ class ArticleDetailView(generic.DetailView):
             form.user = user
             form.save()
         return redirect(article.get_absolute_url())
+
+
+class CategoryListView(generic.ListView):
+    model = Article
+    context_object_name = "articles"
+    template_name = "pages/category.html"
+
+    def get_queryset(self):
+        articles = Article.objects.filter(category__slug=self.kwargs["slug"])
+        return articles
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["last_5_articles"] = Article.objects.all().order_by("-created_at")[:5]
+
+        # Собираем 10 случайных тегов
+        context["tags"] = Tag.objects.order_by("?")[:10]
+
+        return context

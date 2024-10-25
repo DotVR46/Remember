@@ -151,7 +151,9 @@
                 <div class="container section-title" data-aos="fade-up">
                     <div class="section-title-container d-flex align-items-center justify-content-between">
                         <h2>{{ category.name }}</h2>
-                        <p><a href="categories.html">Все записи категории "{{ category.name }}"</a></p>
+                        <p><a href="{% url 'category-list' category.slug %}">Все записи категории
+                            "{{ category.name }}"</a>
+                        </p>
                     </div>
                 </div><!-- End Section Title -->
 
