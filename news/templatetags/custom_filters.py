@@ -1,8 +1,7 @@
+import re
+
 from django import template
 import random
-from taggit.models import Tag
-
-from news.models import Article
 
 register = template.Library()
 
@@ -26,19 +25,13 @@ def random_articles(articles, count=5):
     return articles_list[:count]  # Возвращаем первые count (по умолчанию 5)
 
 
-@register.simple_tag
-def get_last_5_articles(exclude_article_id=None):
+@register.filter
+def strip_tags_and_nbsp(value):
     """
-    Возвращает последние 5 статей, исключая или нет указанную статью по ID
+    Удаляет HTML-теги и заменяет &nbsp; на пробелы.
     """
-
-    if exclude_article_id:
-        queryset = Article.objects.exclude(id=exclude_article_id).order_by("-created_at")[:5]
-    else:
-        queryset = Article.objects.all().order_by("-created_at")[:5]
-    return queryset
-
-
-@register.simple_tag
-def get_random_tags(count=10):
-    return Tag.objects.order_by("?")[:count]
+    # Удаление HTML-тегов
+    clean_value = re.sub(r"<.*?>", "", value)
+    # Замена символов &nbsp; на пробел
+    clean_value = clean_value.replace("&nbsp;", " ")
+    return clean_value

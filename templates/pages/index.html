@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load custom_filters %}
+{% load custom_tags %}
 {% block title %}Main page{% endblock %}
 {% block content %}
     <main class="main">
@@ -75,7 +76,7 @@
                                         <span>{{ article.created_at|date:"d M, Y" }}</span></div>
                                     <h2><a href="{% url 'article-detail' article.slug %}">{{ article.title }}</a>
                                     </h2>
-                                    <p class="mb-4 d-block">{{ article.content|truncatewords:20 }}</p>
+                                    <p class="mb-4 d-block">{{ article.content|truncatewords:20|strip_tags_and_nbsp }}</p>
 
                                     <div class="d-flex align-items-center author">
                                         <div class="photo"><img src="{{ article.author.userprofile.avatar.url }}"
