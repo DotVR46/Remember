@@ -173,12 +173,19 @@
                                     <div>
                                         <h4>{{ article.author.username }}</h4>
                                         <div class="social-links">
-                                            <a href="{{ article.author.userprofile.twitter }}" target="_blank"><i
-                                                    class="bi bi-twitter-x"></i></a>
-                                            <a href="{{ article.author.userprofile.facebook }}" target="_blank"><i
-                                                    class="bi bi-facebook"></i></a>
-                                            <a href="{{ article.author.userprofile.instagram }}" target="_blank"><i
-                                                    class="biu bi-instagram"></i></a>
+                                            {% if article.author.userprofile.twitter %}
+                                                <a href="{{ article.author.userprofile.twitter }}" target="_blank"><i
+                                                        class="bi bi-twitter-x"></i></a>
+                                            {% endif %}
+                                            {% if article.author.userprofile.facebook %}
+                                                <a href="{{ article.author.userprofile.facebook }}" target="_blank"><i
+                                                        class="bi bi-twitter-x"></i></a>
+                                            {% endif %}
+                                            {% if article.author.userprofile.instagram %}
+                                                <a href="{{ article.author.userprofile.instagram }}" target="_blank"><i
+                                                        class="bi bi-twitter-x"></i></a>
+                                            {% endif %}
+
                                         </div>
                                     </div>
                                 </div>
