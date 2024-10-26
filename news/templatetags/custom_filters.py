@@ -1,5 +1,8 @@
 from django import template
 import random
+from taggit.models import Tag
+
+from news.models import Article
 
 register = template.Library()
 
@@ -21,3 +24,19 @@ def random_articles(articles, count=5):
     articles_list = list(articles)
     random.shuffle(articles_list)  # Перемешиваем статьи
     return articles_list[:count]  # Возвращаем первые count (по умолчанию 5)
+
+
+@register.simple_tag
+def get_last_5_articles(exclude_article_id=None):
+    """
+    Возвращает последние 5 статей, исключая указанную статью по ID
+    """
+    queryset = Article.objects.exclude(id=exclude_article_id).order_by("-created_at")[
+        :5
+    ]
+    return queryset
+
+
+@register.simple_tag
+def get_random_tags(count=10):
+    return Tag.objects.order_by("?")[:count]

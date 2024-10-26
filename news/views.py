@@ -59,19 +59,6 @@ class ArticleDetailView(generic.DetailView):
             | Q(id__in=Article.objects.order_by("-created_at").values("id")[:5])
         )
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        # Передаем 5 последних статей в контекст, исключая текущую статью
-        context["last_5_articles"] = Article.objects.exclude(
-            id=self.object.id
-        ).order_by("-created_at")[:5]
-
-        # Собираем 10 случайных тегов
-        context["tags"] = Tag.objects.order_by("?")[:10]
-
-        return context
-
     @staticmethod
     def post(request, slug):
         article = Article.objects.get(slug=slug)
@@ -95,12 +82,3 @@ class CategoryListView(generic.ListView):
     def get_queryset(self):
         articles = Article.objects.filter(category__slug=self.kwargs["slug"])
         return articles
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["last_5_articles"] = Article.objects.all().order_by("-created_at")[:5]
-
-        # Собираем 10 случайных тегов
-        context["tags"] = Tag.objects.order_by("?")[:10]
-
-        return context
