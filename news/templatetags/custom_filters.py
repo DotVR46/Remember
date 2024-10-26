@@ -29,11 +29,13 @@ def random_articles(articles, count=5):
 @register.simple_tag
 def get_last_5_articles(exclude_article_id=None):
     """
-    Возвращает последние 5 статей, исключая указанную статью по ID
+    Возвращает последние 5 статей, исключая или нет указанную статью по ID
     """
-    queryset = Article.objects.exclude(id=exclude_article_id).order_by("-created_at")[
-        :5
-    ]
+
+    if exclude_article_id:
+        queryset = Article.objects.exclude(id=exclude_article_id).order_by("-created_at")[:5]
+    else:
+        queryset = Article.objects.all().order_by("-created_at")[:5]
     return queryset
 
 

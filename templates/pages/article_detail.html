@@ -56,7 +56,9 @@
                                 <div class="meta-bottom">
                                     <i class="bi bi-folder"></i>
                                     <ul class="cats">
-                                        <li><a href="#">{{ article.category.name }}</a></li>
+                                        <li>
+                                            <a href="{% url 'category-list' article.category.slug %}">{{ article.category.name }}</a>
+                                        </li>
                                     </ul>
 
                                     <i class="bi bi-tags"></i>
