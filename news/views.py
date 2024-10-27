@@ -64,10 +64,10 @@ class ArticleDetailView(generic.DetailView):
         return redirect(article.get_absolute_url())
 
 
-class CategoryListView(generic.ListView):
+class ArticleListView(generic.ListView):
     model = Article
     context_object_name = "articles"
-    template_name = "pages/category.html"
+    template_name = "pages/article_list.html"
     paginate_by = 6
 
     def get_queryset(self):
@@ -76,8 +76,25 @@ class CategoryListView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(self.kwargs["slug"])
         # Получаем объект категории по slug и добавляем его в контекст
         category = get_object_or_404(Category, slug=self.kwargs["slug"])
         context["category"] = category
         return context
+
+
+class SearchView(generic.ListView):
+    model = Article
+    context_object_name = "articles"
+    template_name = "pages/article_list.html"
+    paginate_by = 6
+
+    def post(self, request, *args, **kwargs):
+        query = request.POST.get("query")
+        print(query)
+        if query:
+            self.object_list = Article.objects.filter(
+                Q(title__icontains=query) | Q(content__icontains=query)
+            )
+        else:
+            self.object_list = self.get_queryset()
+        return self.render_to_response(self.get_context_data())

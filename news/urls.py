@@ -9,7 +9,8 @@ urlpatterns = [
     ),
     path(
         "category/<str:slug>/",
-        views.CategoryListView.as_view(),
+        views.ArticleListView.as_view(),
         name="category-list",
     ),
+    path("search/", views.SearchView.as_view(), name="search"),
 ]
