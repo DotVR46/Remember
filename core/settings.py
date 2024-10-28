@@ -288,3 +288,5 @@ CKEDITOR_5_CONFIGS = {
 
 # Define a constant in settings.py to specify file upload permissions
 CKEDITOR_5_FILE_UPLOAD_PERMISSION = "staff"
+
+LOGIN_REDIRECT_URL = '/'
