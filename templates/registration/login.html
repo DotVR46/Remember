@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% block title %}Вход{% endblock %}
 {% block content %}
 
     <main class="main">
@@ -19,30 +19,51 @@
 
         <!-- Contact Section -->
         <section id="contact" class="contact section">
+
             <div class="container" data-aos="fade-up" data-aos-delay="100">
+                {% if form.errors %}
+                    <p>Ваши логин и пароль не совпадают, попробуйте еще раз.</p>
+                {% endif %}
+
+                {% if next %}
+                    {% if user.is_authenticated %}
+                        <p>У вашего аккаунта нет доступа к этой странице. Чтобы продолжить,
+                            пожалуйста, войдите с учетной записью, которая имеет доступ.</p>
+                    {% else %}
+                        <p>Пожалуйста, войдите, чтобы увидеть эту страницу.</p>
+                    {% endif %}
+                {% endif %}
+
                 <div class="row gy-4">
-                    <div class="col-lg-6">
-                        <form action="{% url 'login' %}" method="post" class="php-email-form" data-aos="fade-up"
-                              data-aos-delay="200">
-                            {% csrf_token %}
-                            <div class="row gy-4">
-                                <div class="col-md-6">
-                                    <input type="text" name="username" id="username" class="form-control"
-                                           placeholder="Логин"
-                                           required="">
+                    <div class="d-flex justify-content-center">
+                        <div class="col-lg-4 col-md-4">
+                            <p>Чтобы войти в аккаунт, введите логин и пароль.</p>
+                            <form action="{% url 'login' %}" method="post" class="php-email-form" data-aos="fade-up"
+                                  data-aos-delay="200">
+                                {% csrf_token %}
+                                <div class="row gy-4">
+                                    <div class="mb-1">
+                                        <label for="username"></label>
+                                        <input type="text" name="username" id="username"
+                                               class="form-control"
+                                               placeholder="Логин"
+                                               required="">
+                                    </div>
+                                    <div class="mb-1">
+                                        <label for="password"></label>
+                                        <input type="password" id="password"
+                                               class="form-control" name="password"
+                                               placeholder="Пароль"
+                                               required="">
+                                    </div>
+                                    <div class="col-md-12 text-center">
+                                        <button type="submit">Войти</button>
+                                        <input type="hidden" name="next" value="{{ next }}"/>
+                                    </div>
                                 </div>
-                                <div class="col-md-6 ">
-                                    <input type="password" id="password" class="form-control" name="password"
-                                           placeholder="Пароль"
-                                           required="">
-                                </div>
-                                <div class="col-md-12 text-center">
-                                    <button type="submit">Войти</button>
-                                    <input type="hidden" name="next" value="{{ next }}"/>
-                                </div>
-                            </div>
-                        </form>
-                    </div><!-- End Contact Form -->
+                            </form>
+                        </div><!-- End Contact Form -->
+                    </div>
                 </div>
             </div>
         </section><!-- /Contact Section -->
