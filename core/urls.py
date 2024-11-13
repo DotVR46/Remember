@@ -27,6 +27,7 @@ admin.site.site_title = "Remember"
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("news.urls")),
+    path("", include("users.urls")),
     path("ckeditor5/", include("django_ckeditor_5.urls")),
     path("users/", include("django.contrib.auth.urls")),
 ]

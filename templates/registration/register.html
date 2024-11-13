@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Зарегистрироваться{% endblock %}
+{% block content %}
+
+    <main class="main">
+
+        <!-- Page Title -->
+        <div class="page-title">
+            <div class="container d-lg-flex justify-content-between align-items-center">
+                <h1 class="mb-2 mb-lg-0">Регистрация</h1>
+                <nav class="breadcrumbs">
+                    <ol>
+                        <li><a href="{% url 'main-page' %}">Главная</a></li>
+                        <li class="current">Регистрация</li>
+                    </ol>
+                </nav>
+            </div>
+        </div><!-- End Page Title -->
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact section">
+
+            <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+
+                <div class="row gy-4">
+                    <div class="d-flex justify-content-center">
+                        <div class="col-lg-4 col-md-4">
+                            <h1>Создать аккаунт</h1>
+                            <p>Зарегистрируйтесь введя следующие данные</p>
+                            {% if form.errors %}
+                                {% for error in form.errors.as_data.values %}
+                                    {% for data in error.0 %}
+                                        {{ data }}
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                            <form action="{% url 'register' %}" method="post" class="php-email-form" data-aos="fade-up"
+                                  data-aos-delay="200">
+                                {% csrf_token %}
+                                <div class="row gy-4">
+                                    <div class="mb-1">
+                                        <label for="username"></label>
+                                        <input type="text" name="username" id="username"
+                                               class="form-control"
+                                               placeholder="Логин"
+                                               required="">
+                                    </div>
+                                    <div class="mb-1">
+                                        <label for="password"></label>
+                                        <input type="password" id="password"
+                                               class="form-control" name="password1"
+                                               placeholder="Пароль"
+                                               required="">
+                                    </div>
+                                    <div class="mb-1">
+                                        <label for="password"></label>
+                                        <input type="password" id="password2"
+                                               class="form-control" name="password2"
+                                               placeholder="Подтвердите пароль"
+                                               required="">
+                                    </div>
+                                    <div class="col-md-12 text-center">
+                                        <button type="submit">Зарегистрироваться</button>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div><!-- End Contact Form -->
+                    </div>
+                </div>
+            </div>
+        </section><!-- /Contact Section -->
+    </main>
+{% endblock %}
