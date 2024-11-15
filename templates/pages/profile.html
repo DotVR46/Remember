@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% load custom_tags %}
+{% block title %}
+    {{ user.username }}
+{% endblock %}
+{% block content %}
+    <main class="main">
+
+        <!-- Page Title -->
+        <div class="page-title">
+            <div class="container d-lg-flex justify-content-between align-items-center">
+                <h1 class="mb-2 mb-lg-0">Профиль пользователя - {{ user.username }}</h1>
+                <nav class="breadcrumbs">
+                    <ol>
+                        <li><a href="index.html">Главная</a></li>
+                        <li class="current">{{ user.username }}</li>
+                    </ol>
+                </nav>
+            </div>
+        </div><!-- End Page Title -->
+
+        <!-- Team Section -->
+        <section id="team" class="team section">
+
+            <!-- Section Title -->
+
+
+            <div class="container">
+
+                <div class="row gy-4">
+                    <div class="col-lg-8">
+                        {% if articles %}
+                            <!-- Blog Posts Section -->
+                            <section id="blog-posts" class="blog-posts section">
+                                <div class="container">
+                                    <div class="row gy-4">
+                                        {% for article in articles %}
+                                            <div class="col-lg-6">
+                                                <article class="position-relative h-100">
+
+                                                    <div class="post-img position-relative overflow-hidden">
+                                                        <img src="{{ article.cover.url }}" class="img-fluid" alt="">
+                                                        <span class="post-date">{{ article.created_at|date:'d M Y' }}</span>
+                                                    </div>
+
+                                                    <div class="post-content d-flex flex-column">
+
+                                                        <h3 class="post-title">{{ article.title }}</h3>
+
+                                                        <div class="meta d-flex align-items-center">
+                                                            <div class="d-flex align-items-center">
+                                                                <i class="bi bi-person"></i> <span
+                                                                    class="ps-2">{{ article.author.username }}</span>
+                                                            </div>
+                                                            <span class="px-3 text-black-50">/</span>
+                                                            <div class="d-flex align-items-center">
+                                                                <i class="bi bi-folder2"></i> <span
+                                                                    class="ps-2">{{ article.category }}</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <p>
+                                                            {{ article.content|truncatewords:18|strip_tags_and_nbsp }}
+                                                        </p>
+
+                                                        <hr>
+
+                                                        <a href="{{ article.get_absolute_url }}"
+                                                           class="readmore stretched-link"><span>Читать далее</span><i
+                                                                class="bi bi-arrow-right"></i></a>
+
+                                                    </div>
+
+                                                </article>
+                                            </div><!-- End post list item -->
+                                        {% endfor %}
+
+
+                                    </div>
+                                </div>
+
+                            </section><!-- /Blog Posts Section -->
+
+                            <!-- Blog Pagination Section -->
+                            <section id="blog-pagination" class="blog-pagination section">
+                                <div class="container">
+                                    <div class="d-flex justify-content-center">
+                                        <ul>
+                                            {% if page_obj.has_previous %}
+                                                <li><a href="?page={{ page_obj.previous_page_number }}"><i
+                                                        class="bi bi-chevron-left"></i></a></li>
+                                            {% endif %}
+
+                                            {% for num in page_obj.paginator.page_range %}
+                                                {% if page_obj.number == num %}
+                                                    <li><a href="#" class="active">{{ num }}</a></li>
+                                                {% else %}
+                                                    <li><a href="?page={{ num }}">{{ num }}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {% if page_obj.has_next %}
+                                                <li><a href="?page={{ page_obj.next_page_number }}"><i
+                                                        class="bi bi-chevron-right"></i></a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </section>
+                            <!-- /Blog Pagination Section -->
+                        {% else %}
+                            <p>К сожалениею, ничего нет...</p>
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-4 sidebar">
+
+                        <div class="widgets-container">
+
+                            <!-- Blog Author Widget -->
+                            <div class="blog-author-widget widget-item">
+
+                                <div class="d-flex flex-column align-items-center">
+                                    <div class="d-flex align-items-center w-100">
+                                        <img src="{{ user.userprofile.avatar.url }}" alt=""
+                                             class="rounded-circle flex-shrink-0">
+                                        <div>
+                                            <h4>{{ user.username }}</h4>
+                                            <div class="social-links">
+                                                {% if article.author.userprofile.twitter %}
+                                                    <a href="{{ user.userprofile.twitter }}"
+                                                       target="_blank"><i
+                                                            class="bi bi-twitter-x"></i></a>
+                                                {% endif %}
+                                                {% if article.author.userprofile.facebook %}
+                                                    <a href="{{ user.userprofile.facebook }}" target="_blank"><i
+                                                            class="bi bi-twitter-x"></i></a>
+                                                {% endif %}
+                                                {% if user.userprofile.instagram %}
+                                                    <a href="{{ user.userprofile.instagram }}"
+                                                       target="_blank"><i
+                                                            class="bi bi-twitter-x"></i></a>
+                                                {% endif %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <p>
+                                        {{ user.userprofile.bio }}
+                                    </p>
+
+                                </div>
+
+                            </div><!--/Blog Author Widget -->
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section><!-- /Team Section -->
+
+    </main>
+{% endblock %}

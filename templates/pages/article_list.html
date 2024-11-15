@@ -2,7 +2,7 @@
 {% load custom_filters %}
 {% load custom_tags %}
 {% block title %}
-
+    {{ category.name }}
 {% endblock %}
 {% block content %}
     <main class="main">
@@ -55,7 +55,7 @@
                                                     </div>
 
                                                     <p>
-                                                        {{ article.content|truncatewords:18 }}
+                                                        {{ article.content|truncatewords:18|strip_tags_and_nbsp }}
                                                     </p>
 
                                                     <hr>
