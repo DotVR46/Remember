@@ -26,6 +26,9 @@ class Category(models.Model):
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse("category-list", kwargs={"slug": self.slug})
+
     class Meta:
         verbose_name = "Категория"
         verbose_name_plural = "Категории"

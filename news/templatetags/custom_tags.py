@@ -1,7 +1,7 @@
 from django import template
 from taggit.models import Tag
 
-from news.models import Article
+from news.models import Article, Category
 
 register = template.Library()
 
@@ -22,3 +22,8 @@ def get_last_5_articles(exclude_article_id=None):
 @register.simple_tag
 def get_random_tags(count=10):
     return Tag.objects.order_by("?")[:count]
+
+
+@register.simple_tag
+def get_categories():
+    return Category.objects.all()

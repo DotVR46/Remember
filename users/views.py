@@ -43,5 +43,6 @@ class ProfileView(generic.DetailView):
         # Добавляем данные пагинации в контекст
         context["page_obj"] = page_obj
         context["articles"] = page_obj.object_list
+        context["user"] = user
 
         return context
