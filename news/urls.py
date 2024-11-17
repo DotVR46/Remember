@@ -13,4 +13,6 @@ urlpatterns = [
         name="category-list",
     ),
     path("search/", views.SearchView.as_view(), name="search"),
+    path("tag/<str:tag_slug>/", views.TagListView.as_view(), name="articles-by-tag"),
+    path("contact/", views.ContactView.as_view(), name="contact"),
 ]

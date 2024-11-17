@@ -24,6 +24,8 @@
                         {% endfor %}
                     </ul>
                 </li>
+                <li><a href="{% url 'contact' %}"
+                       {% if request.path == '/contact' %}class="active"{% endif %}>Контакты</a></li>
 
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>

@@ -98,3 +98,24 @@ class SearchView(generic.ListView):
         else:
             self.object_list = self.get_queryset()
         return self.render_to_response(self.get_context_data())
+
+
+class TagListView(generic.ListView):
+    model = Article
+    context_object_name = "articles"
+    template_name = "pages/article_list.html"
+    paginate_by = 6
+
+    def get_queryset(self):
+        tag_slug = self.kwargs["tag_slug"]
+        self.tag = get_object_or_404(Tag, slug=tag_slug)
+        return Article.objects.filter(tags=self.tag)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["tag"] = self.tag
+        return context
+
+
+class ContactView(generic.TemplateView):
+    template_name = "pages/contact.html"

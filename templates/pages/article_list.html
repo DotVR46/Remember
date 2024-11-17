@@ -2,7 +2,11 @@
 {% load custom_filters %}
 {% load custom_tags %}
 {% block title %}
-    {{ category.name }}
+    {% if category %}
+        {{ category.name }}
+    {% else %}
+        {{ tag|capfirst }}
+    {% endif %}
 {% endblock %}
 {% block content %}
     <main class="main">
@@ -10,7 +14,13 @@
         <!-- Page Title -->
         <div class="page-title position-relative">
             <div class="container d-lg-flex justify-content-between align-items-center">
-                <h1 class="mb-2 mb-lg-0">Записи категории: {{ category.name }}</h1>
+                <h1 class="mb-2 mb-lg-0">
+                    {% if category %}
+                        Записи категории: {{ category.name }}
+                    {% else %}
+                        Записи с тегом: {{ tag|capfirst }}
+                    {% endif %}
+                </h1>
                 <nav class="breadcrumbs">
                     <ol>
                         <li><a href="{% url 'main-page' %}">Главная</a></li>
@@ -104,7 +114,7 @@
                         </section>
                         <!-- /Blog Pagination Section -->
                     {% else %}
-                        <p>К сожалениею, ничего нет...</p>
+                        <p>К сожалению, ничего нет...</p>
                     {% endif %}
                 </div>
 
@@ -149,7 +159,7 @@
                             <ul>
                                 {% get_random_tags as tags %}
                                 {% for tag in tags %}
-                                    <li><a href="#">{{ tag.name }}</a></li>
+                                    <li><a href="{% url 'articles-by-tag' tag.slug %}">{{ tag.name }}</a></li>
                                 {% endfor %}
                             </ul>
 

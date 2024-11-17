@@ -1812,7 +1812,7 @@ section,
 # Contact Section
 --------------------------------------------------------------*/
 .contact .info-item + .info-item {
-    margin-top: 40px;
+    /*margin-top: 40px;*/
 }
 
 .contact .info-item i {
@@ -1826,7 +1826,7 @@ section,
     align-items: center;
     border-radius: 4px;
     transition: all 0.3s ease-in-out;
-    margin-right: 15px;
+    /*margin-right: 15px;*/
 }
 
 .contact .info-item h3 {
