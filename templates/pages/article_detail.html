@@ -85,15 +85,16 @@
                             {% for comment in article.get_comment %}
                                 <div class="comment">
                                     <div class="d-flex">
-                                        <div class="comment-img"><img src="{{ article.author.userprofile.avatar.url }}"
+                                        <div class="comment-img"><img src="{{ comment.user.userprofile.avatar.url }}"
                                                                       alt="" class="rounded-circle flex-shrink-0"></div>
                                         <div>
-                                            {% if user.is_authenticated %}
-                                                <h5><a href="">{{ comment.user.username }}</a> <a href="#formComment"
-                                                                                                  class="reply"
-                                                                                                  onclick="addCommentReply('{{ comment.user.username }}', '{{ comment.id }}')"><i
-                                                        class="bi bi-reply-fill"></i> Ответить</a></h5>
-                                            {% endif %}
+                                            <h5><a href="">{{ comment.user.username }}</a>
+                                                {% if user.is_authenticated %}
+                                                    <a href="#formComment"
+                                                       class="reply"
+                                                       onclick="addCommentReply('{{ comment.user.username }}', '{{ comment.id }}')"><i
+                                                            class="bi bi-reply-fill"></i> Ответить</a></h5>
+                                                {% endif %}
                                             <time datetime="2020-01-01">{{ comment.created_at|date:"d M, Y" }}</time>
                                             <p>
                                                 {{ comment.text }}
@@ -105,17 +106,18 @@
                                     <div id="comment-reply-1" class="comment comment-reply">
                                         <div class="d-flex">
                                             <div class="comment-img"><img
-                                                    src="{{ article.author.userprofile.avatar.url }}" alt=""
+                                                    src="{{ comment.user.userprofile.avatar.url }}" alt=""
                                                     class="rounded-circle flex-shrink-0">
                                             </div>
                                             <div>
-                                                {% if user.is_authenticated %}
-                                                    <h5><a href="">{{ comment_reply.user.username }}</a> <a
-                                                            href="#formComment"
-                                                            onclick="addCommentReply('{{ comment.user.username }}', '{{ comment.id }}')"
-                                                            class=" reply"><i
-                                                            class="bi bi-reply-fill"></i> Ответить</a></h5>
-                                                {% endif %}
+                                                <h5><a href="">{{ comment_reply.user.username }}</a>
+                                                    {% if user.is_authenticated %}
+                                                        <a
+                                                                href="#formComment"
+                                                                onclick="addCommentReply('{{ comment.user.username }}', '{{ comment.id }}')"
+                                                                class=" reply"><i
+                                                                class="bi bi-reply-fill"></i> Ответить</a></h5>
+                                                    {% endif %}
                                                 <time datetime="2020-01-01">{{ comment_reply.created_at|date:"d M, Y" }}</time>
                                                 <p>
                                                     {{ comment_reply.text }}

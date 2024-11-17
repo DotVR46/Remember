@@ -26,8 +26,10 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG")
+# DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["qc4apk-217-29-24-132.ru.tuna.am", "127.0.0.1", "localhost"]
+CSRF_TRUSTED_ORIGINS = ["https://qc4apk-217-29-24-132.ru.tuna.am"]
 
 # Application definition
 
