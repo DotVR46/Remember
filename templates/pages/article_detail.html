@@ -82,7 +82,7 @@
                         <div class="container">
 
                             <h4 class="comments-count">{{ article.comments.count|comment_declension }}</h4>
-                            {% for comment in article.get_comment %}
+                            {% for comment in article.get_comment|approved_only %}
                                 <div class="comment">
                                     <div class="d-flex">
                                         <div class="comment-img"><img src="{{ comment.user.userprofile.avatar.url }}"
@@ -102,7 +102,7 @@
                                         </div>
                                     </div>
                                 </div><!-- End comment #1 -->
-                                {% for comment_reply in comment.comment_set.all %}
+                                {% for comment_reply in comment.comment_set.all|approved_only %}
                                     <div id="comment-reply-1" class="comment comment-reply">
                                         <div class="d-flex">
                                             <div class="comment-img"><img

@@ -87,6 +87,7 @@ class Comment(models.Model):
         User, on_delete=models.CASCADE, verbose_name="Пользователь"
     )
     text = models.CharField(max_length=300, verbose_name="Текст")
+    is_approved = models.BooleanField(verbose_name="Одобрен", default=False)
     created_at = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
     parent = models.ForeignKey(
         "self",

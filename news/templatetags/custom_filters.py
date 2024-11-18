@@ -35,3 +35,8 @@ def strip_tags_and_nbsp(value):
     # Замена символов &nbsp; на пробел
     clean_value = clean_value.replace("&nbsp;", " ")
     return clean_value
+
+
+@register.filter
+def approved_only(comments):
+    return comments.filter(is_approved=True)
