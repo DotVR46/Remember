@@ -72,7 +72,7 @@ class ArticleListView(generic.ListView):
 
     def get_queryset(self):
         slug = self.kwargs["slug"]
-        return Article.objects.filter(category__slug=slug)
+        return Article.objects.filter(category__slug=slug).order_by("-created_at")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -94,7 +94,7 @@ class SearchView(generic.ListView):
         if query:
             self.object_list = Article.objects.filter(
                 Q(title__icontains=query) | Q(content__icontains=query)
-            )
+            ).order_by("-created_at")
         else:
             self.object_list = self.get_queryset()
         return self.render_to_response(self.get_context_data())
@@ -109,7 +109,7 @@ class TagListView(generic.ListView):
     def get_queryset(self):
         tag_slug = self.kwargs["tag_slug"]
         self.tag = get_object_or_404(Tag, slug=tag_slug)
-        return Article.objects.filter(tags=self.tag)
+        return Article.objects.filter(tags=self.tag).order_by("-created_at")
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
