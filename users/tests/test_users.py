@@ -10,7 +10,9 @@ class ProfileViewTestCase(TestCase):
     def setUp(self):
         # Создаем пользователя и статьи
         self.user = User.objects.create(username="testuser", password="testpassword")
-        self.category = Category.objects.create(name="Test Category", slug="test-category")
+        self.category = Category.objects.create(
+            name="Test Category", slug="test-category"
+        )
         # Создаем 10 статей для проверки пагинации
         for i in range(10):
             Article.objects.create(
@@ -18,7 +20,7 @@ class ProfileViewTestCase(TestCase):
                 title=f"Article {i}",
                 content="Content",
                 slug=f"article-{i}",
-                category=self.category
+                category=self.category,
             )
 
     def test_profile_view_status_code(self):
@@ -57,3 +59,82 @@ class ProfileViewTestCase(TestCase):
         self.assertEqual(
             len(page_obj.object_list), 4
         )  # На второй странице должно быть оставшиеся 4 статьи
+
+
+class UserRegisterViewTestCase(TestCase):
+
+    def test_register_view_uses_correct_template(self):
+        response = self.client.get(reverse("register"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "registration/register.html")
+
+    def test_successful_registration_creates_user(self):
+        response = self.client.post(
+            reverse("register"),
+            {
+                "username": "testuser",
+                "password1": "Testpassword123",
+                "password2": "Testpassword123",
+            },
+        )
+        # Проверка, что пользователь был создан
+        self.assertEqual(User.objects.count(), 1)
+        user = User.objects.first()
+        self.assertEqual(user.username, "testuser")
+        # Проверка, что используется шаблон успешной регистрации
+        self.assertTemplateUsed(response, "registration/register_done.html")
+
+    def test_registration_password_mismatch(self):
+        response = self.client.post(
+            reverse("register"),
+            {
+                "username": "testuser",
+                "password1": "Testpassword123",
+                "password2": "Wrongpassword123",
+            },
+        )
+        # Пользователь не должен быть создан
+        self.assertEqual(User.objects.count(), 0)
+        # Проверка, что используется шаблон для повторной попытки регистрации
+        self.assertTemplateUsed(response, "registration/register.html")
+        # Проверка, что форма вернулась с ошибкой
+        self.assertContains(response, "Пароли не совпадают!")
+
+
+class LoginViewTest(TestCase):
+
+    def setUp(self):
+        # Создаем тестового пользователя
+        self.user = User.objects.create_user(
+            username="testuser", password="Testpassword123"
+        )
+
+    def test_login_view_status_code(self):
+        # Проверка доступности страницы логина
+        response = self.client.get(reverse("login"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "registration/login.html")
+
+    def test_login_successful(self):
+        # Проверка успешного входа с правильным логином и паролем
+        response = self.client.post(
+            reverse("login"), {"username": "testuser", "password": "Testpassword123"}
+        )
+        # Проверка, что после успешного входа пользователь перенаправляется на страницу после входа (например, на главную)
+        self.assertRedirects(
+            response, reverse("main-page")
+        )  # Замените на ваш путь после входа
+        # Проверка, что пользователь залогинен
+        self.assertTrue(response.wsgi_request.user.is_authenticated)
+
+    def test_login_invalid_credentials(self):
+        # Проверка, что при неверных данных вход не удастся
+        response = self.client.post(
+            reverse("login"), {"username": "testuser", "password": "Wrongpassword123"}
+        )
+        # Проверка, что ошибка появилась и форма снова рендерится
+        self.assertContains(
+            response, "Ваши логин и пароль не совпадают, попробуйте еще раз."
+        )
+        # Проверка, что пользователь не залогинен
+        self.assertFalse(response.wsgi_request.user.is_authenticated)
