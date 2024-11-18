@@ -4,6 +4,8 @@ from django.urls import reverse
 
 from datetime import datetime, timedelta
 
+from taggit.models import Tag
+
 from news.models import Category, Article, Comment
 
 User = get_user_model()
@@ -131,9 +133,7 @@ class ArticleDetailViewTestCase(TestCase):
                 "user": self.user,  # Пустое значение для корневого комментария
             },
         )
-        self.assertEqual(
-            response.status_code, 302
-        )
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(
             Comment.objects.filter(text="New comment", article=self.article).exists()
         )
@@ -200,7 +200,9 @@ class ArticleListViewTest(TestCase):
 
     def test_article_list_pagination(self):
         # Создаем дополнительные статьи для проверки пагинации
-        for i in range(7):  # Создаем всего 8 статей, чтобы активировать пагинацию при paginate_by = 6
+        for i in range(
+            7
+        ):  # Создаем всего 8 статей, чтобы активировать пагинацию при paginate_by = 6
             Article.objects.create(
                 title=f"Дополнительная статья {i}",
                 content=f"Контент статьи-{i}",
@@ -215,7 +217,9 @@ class ArticleListViewTest(TestCase):
 
         # Проверяем, что вторая страница также работает корректно
         response = self.client.get(self.url + "?page=2")
-        self.assertEqual(len(response.context["articles"]), 2)  # Оставшиеся 2 статьи на второй странице
+        self.assertEqual(
+            len(response.context["articles"]), 2
+        )  # Оставшиеся 2 статьи на второй странице
 
 
 class SearchViewTest(TestCase):
@@ -287,4 +291,87 @@ class SearchViewTest(TestCase):
 
         # Проверяем, что вторая страница корректно работает
         response = self.client.post(self.url + "?page=2", {"query": ""})
-        self.assertEqual(len(response.context["articles"]), 5)  # Остальные статьи на второй странице
+        self.assertEqual(
+            len(response.context["articles"]), 5
+        )  # Остальные статьи на второй странице
+
+
+class TagListViewTest(TestCase):
+
+    def setUp(self):
+        # Создаем пользователя
+        self.user = User.objects.create_user(username="testuser", password="password")
+        self.category1 = Category.objects.create(name="Category 1", slug="category-1")
+        # Создаем тестовые теги
+        self.tag1 = Tag.objects.create(name="Тестовый тег 1", slug="test-tag-1")
+        self.tag2 = Tag.objects.create(name="Тестовый тег 2", slug="test-tag-2")
+
+        # Создаем тестовые статьи и назначаем им теги
+        self.article1 = Article.objects.create(
+            title="Статья с тегом 1",
+            content="Контент статьи с тегом 1",
+            author=self.user,
+            category=self.category1,
+            slug="test1",
+        )
+        self.article1.tags.add(self.tag1)
+
+        self.article2 = Article.objects.create(
+            title="Статья с тегом 2",
+            content="Контент статьи с тегом 2",
+            author=self.user,
+            category=self.category1,
+            slug="test2",
+        )
+        self.article2.tags.add(self.tag2)
+
+        self.article3 = Article.objects.create(
+            title="Статья с обоими тегами",
+            content="Контент статьи с обоими тегами",
+            author=self.user,
+            category=self.category1,
+            slug="test3",
+        )
+        self.article3.tags.add(self.tag1, self.tag2)
+
+        # URL для просмотра тегов
+        self.url = reverse("articles-by-tag", kwargs={"tag_slug": self.tag1.slug})
+
+    def test_tag_list_view_uses_correct_template(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "pages/article_list.html")
+
+    def test_tag_filtering(self):
+        response = self.client.get(self.url)
+        # Проверяем, что отображаются только статьи с тегом "tag1"
+        self.assertIn(self.article1, response.context["articles"])
+        self.assertIn(self.article3, response.context["articles"])
+        self.assertNotIn(self.article2, response.context["articles"])
+
+    def test_context_contains_correct_tag(self):
+        response = self.client.get(self.url)
+        # Проверяем, что в контексте содержится нужный тег
+        self.assertEqual(response.context["tag"], self.tag1)
+
+    def test_pagination(self):
+        # Создаем дополнительные статьи с тегом для проверки пагинации
+        for i in range(8):
+            article = Article.objects.create(
+                title=f"Дополнительная статья {i}",
+                content="Содержание дополнительной статьи",
+                author=self.user,
+                category=self.category1,
+                slug=f"test{i + 4}",
+            )
+            article.tags.add(self.tag1)
+
+        response = self.client.get(self.url)
+        # Проверяем, что на первой странице paginate_by статей
+        self.assertEqual(len(response.context["articles"]), 6)
+
+        # Проверяем, что вторая страница корректно работает
+        response = self.client.get(f"{self.url}?page=2")
+        self.assertEqual(
+            len(response.context["articles"]), 4
+        )  # Остальные статьи на второй странице
