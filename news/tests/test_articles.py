@@ -216,3 +216,75 @@ class ArticleListViewTest(TestCase):
         # Проверяем, что вторая страница также работает корректно
         response = self.client.get(self.url + "?page=2")
         self.assertEqual(len(response.context["articles"]), 2)  # Оставшиеся 2 статьи на второй странице
+
+
+class SearchViewTest(TestCase):
+
+    def setUp(self):
+        # Создаем тестового пользователя
+        self.user = User.objects.create_user(username="testuser", password="password")
+        self.category1 = Category.objects.create(name="Category 1", slug="category-1")
+        # Создаем тестовые статьи
+        self.article1 = Article.objects.create(
+            title="Первый тестовый заголовок",
+            content="Содержание первой тестовой статьи",
+            category=self.category1,
+            slug="test1",
+            author=self.user,
+        )
+        self.article2 = Article.objects.create(
+            title="Второй тестовый заголовок",
+            content="Содержание второй статьи, включающее слово тест",
+            category=self.category1,
+            slug="test2",
+            author=self.user,
+        )
+        self.article3 = Article.objects.create(
+            title="Третий заголовок",
+            content="Ничего общего с словом test",
+            category=self.category1,
+            slug="test3",
+            author=self.user,
+        )
+
+        # URL для поиска
+        self.url = reverse("search")
+
+    def test_search_view_uses_correct_template(self):
+        response = self.client.post(self.url, {"query": "тест"})
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "pages/article_list.html")
+
+    def test_search_by_title_and_content(self):
+        response = self.client.post(self.url, {"query": "тест"})
+        # Проверяем, что статьи, содержащие "тест" в заголовке или контенте, присутствуют
+        self.assertIn(self.article1, response.context["articles"])
+        self.assertIn(self.article2, response.context["articles"])
+        # Убеждаемся, что статья без совпадений не включена
+        self.assertNotIn(self.article3, response.context["articles"])
+
+    def test_empty_query_returns_all_articles(self):
+        response = self.client.post(self.url, {"query": ""})
+        # Проверяем, что возвращаются все статьи, когда нет поискового запроса
+        articles = list(response.context["articles"])
+        self.assertEqual(articles, list(Article.objects.order_by("-created_at")))
+
+    def test_search_view_pagination(self):
+        # Создаем дополнительные статьи для проверки пагинации
+        for i in range(8):
+            Article.objects.create(
+                title=f"Дополнительная статья {i}",
+                content="Содержание дополнительной статьи",
+                author=self.user,
+                category=self.category1,
+                slug=f"test{i + 4}",
+            )
+
+        response = self.client.post(self.url, {"query": ""})
+        self.assertEqual(response.status_code, 200)
+        # Проверяем, что на первой странице paginate_by статей
+        self.assertEqual(len(response.context["articles"]), 6)
+
+        # Проверяем, что вторая страница корректно работает
+        response = self.client.post(self.url + "?page=2", {"query": ""})
+        self.assertEqual(len(response.context["articles"]), 5)  # Остальные статьи на второй странице

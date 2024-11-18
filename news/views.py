@@ -87,10 +87,10 @@ class SearchView(generic.ListView):
     context_object_name = "articles"
     template_name = "pages/article_list.html"
     paginate_by = 6
+    ordering = ["-created_at"]
 
     def post(self, request, *args, **kwargs):
         query = request.POST.get("query")
-        print(query)
         if query:
             self.object_list = Article.objects.filter(
                 Q(title__icontains=query) | Q(content__icontains=query)
