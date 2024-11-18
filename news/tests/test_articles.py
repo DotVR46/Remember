@@ -152,7 +152,7 @@ class ArticleDetailViewTestCase(TestCase):
         self.assertEqual(new_comment.parent, self.parent_comment)
 
 
-class ArticleListViewTest(TestCase):
+class ArticleListViewTestCase(TestCase):
 
     def setUp(self):
         # Создаем тестового пользователя
@@ -201,7 +201,7 @@ class ArticleListViewTest(TestCase):
     def test_article_list_pagination(self):
         # Создаем дополнительные статьи для проверки пагинации
         for i in range(
-            7
+                7
         ):  # Создаем всего 8 статей, чтобы активировать пагинацию при paginate_by = 6
             Article.objects.create(
                 title=f"Дополнительная статья {i}",
@@ -222,7 +222,7 @@ class ArticleListViewTest(TestCase):
         )  # Оставшиеся 2 статьи на второй странице
 
 
-class SearchViewTest(TestCase):
+class SearchViewTestCase(TestCase):
 
     def setUp(self):
         # Создаем тестового пользователя
@@ -296,7 +296,7 @@ class SearchViewTest(TestCase):
         )  # Остальные статьи на второй странице
 
 
-class TagListViewTest(TestCase):
+class TagListViewTestCase(TestCase):
 
     def setUp(self):
         # Создаем пользователя
@@ -375,3 +375,27 @@ class TagListViewTest(TestCase):
         self.assertEqual(
             len(response.context["articles"]), 4
         )  # Остальные статьи на второй странице
+
+
+class ContactViewTestCase(TestCase):
+
+    def setUp(self):
+        # URL для страницы контактов
+        self.url = reverse("contact")
+
+    def test_contact_view_status_code(self):
+        response = self.client.get(self.url)
+        # Проверяем, что ответ успешный
+        self.assertEqual(response.status_code, 200)
+
+    def test_contact_view_uses_correct_template(self):
+        response = self.client.get(self.url)
+        # Проверяем, что используется правильный шаблон
+        self.assertTemplateUsed(response, "pages/contact.html")
+
+    def test_contact_view_context_data(self):
+        response = self.client.get(self.url)
+        # Проверяем, что шаблон получил контекст, если он есть
+        self.assertIn(
+            "view", response.context
+        )  # Django добавляет "view" в контекст по умолчанию
